@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Valentine Quest 💘</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      touch-action: manipulation;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ffdde8, #ffe6f0);
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      color: #ff4d88;
+      margin-top: 60px;
+    }
+
+    p {
+      color: #555;
+      font-size: 18px;
+      padding: 0 16px;
+    }
+
+    button {
+      padding: 14px 26px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* 🌸 GAME HEARTS */
+    .game-heart {
+      position: absolute;
+      bottom: -40px;
+      font-size: 28px;
+      cursor: pointer;
+      animation: floatGame linear forwards;
+    }
+
+    @keyframes floatGame {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% { opacity: 1; }
+      100% {
+        transform: translateY(-120vh) translateX(var(--drift));
+        opacity: 0;
+      }
+    }
+
+    /* 💕 BACKGROUND HEARTS */
+    .bg-heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      opacity: 0.6;
+      pointer-events: none;
+      animation: floatBg 6s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes floatBg {
+      0% { transform: translateY(0); opacity: 0; }
+      10% { opacity: 0.8; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
+
+    /* 💘 QUESTION SCREEN */
+    #screen2 {
+      display: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    #reactionImg {
+      width: 220px;
+      margin-top: 20px;
+    }
+
+    #buttonContainer {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      margin-top: 20px;
+    }
+
+    #yes {
+      background: #ff4d88;
+      color: white;
+      position: absolute;
+      left: 35%;
+      top: 60%;
+    }
+
+    #no {
+  background: #ccc;
+  position: absolute;
+  left: 55%;
+  top: 60%;
+  transform: translate(0, 0);
+  transition: transform 0.15s ease;
+}
+
+    /* 📱 MOBILE */
+    @media (max-width: 600px) {
+      #buttonContainer { height: 160px; }
+      #yes, #no {
+        position: static;
+        display: block;
+        margin: 12px auto;
+        width: 70%;
+        max-width: 260px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🎮 GAME SCREEN -->
+<div id="screen1">
+  <h1>Reasons Why I Want You 💖</h1>
+  <p>
+    💕 Catch the hearts!<br>
+    Each heart reveals a reason why I want you to be my Valentine 💌
+  </p>
+  <p id="progress">Reasons unlocked: 0 / 5</p>
+  <p id="reasonBox" style="font-size:20px;color:#ff4d88;min-height:40px;"></p>
+</div>
+
+<!-- 💘 QUESTION SCREEN -->
+<div id="screen2">
+  <h1>Now tell me… 💘</h1>
+  <p id="tease">Will you be my Valentine?</p>
+
+  <img id="reactionImg" src="img/sweet.gif" alt="reaction">
+
+
+  <div id="buttonContainer">
+    <button id="yes" onclick="finalScreen()">YES 💖</button>
+    <button id="no" onmouseenter="moveNo()" ontouchstart="moveNo()">NO 💔</button>
+  </div>
+</div>
+
+<script>
+  /* 💌 EDIT THESE */
+  const reasons = [
+    "You make me feel safe 💕",
+    "You always make me laugh 🥰",
+    "I love the way you care 😌",
+    "You’re my favorite person 💖",
+    "Life feels better with you 💌"
+  ];
+
+  let reasonIndex = 0;
+  let gameActive = true;
+
+  const MAX_HEARTS = 5;
+  let currentHearts = 0;
+
+  /* 🎮 SPAWN HEART */
+  function spawnHeart() {
+    if (!gameActive || currentHearts >= MAX_HEARTS) return;
+
+    currentHearts++;
+
+    const heart = document.createElement("div");
+    heart.className = "game-heart";
+    heart.innerText = "💖";
+
+    heart.style.left = Math.random() * 85 + "vw";
+    heart.style.animationDuration =
+      (8 + Math.random() * 4) + "s";
+
+    heart.style.setProperty(
+      "--drift",
+      (Math.random() * 100 - 50) + "px"
+    );
+
+    let removed = false;
+
+    function removeHeart() {
+      if (removed) return;
+      removed = true;
+      heart.remove();
+      currentHearts--;
+    }
+
+    heart.onclick = () => {
+      if (!gameActive) return;
+      removeHeart();
+      revealReason();
+    };
+
+    heart.addEventListener("animationend", removeHeart);
+
+    document.body.appendChild(heart);
+  }
+
+  /* 💖 REVEAL REASONS */
+  function revealReason() {
+    document.getElementById("reasonBox").innerText =
+      reasons[reasonIndex];
+
+    reasonIndex++;
+    document.getElementById("progress").innerText =
+      `Reasons unlocked: ${reasonIndex} / ${reasons.length}`;
+
+    if (reasonIndex >= reasons.length) {
+      gameActive = false;
+      setTimeout(showQuestion, 1200);
+    }
+  }
+
+  /* 🚀 INITIAL HEARTS */
+  for (let i = 0; i < MAX_HEARTS; i++) {
+    setTimeout(spawnHeart, i * 300);
+  }
+
+  /* 🔁 CONTINUOUS SPAWN */
+  setInterval(() => {
+    if (gameActive) spawnHeart();
+  }, 900);
+
+  /* 💘 QUESTION SCREEN */
+  function showQuestion() {
+    document.getElementById("screen1").style.display = "none";
+    document.getElementById("screen2").style.display = "block";
+    startBackgroundHearts();
+  }
+
+  /* 😈 NO BUTTON CHAOS */
+  let noCount = 0;
+  function moveNo() {
+  noCount++;
+
+  const noBtn = document.getElementById("no");
+  document.getElementById("reactionImg").src = "img/panic.png";
+
+  const maxX = 120;
+  const maxY = 80;
+
+  const offsetX = (Math.random() * maxX * 2) - maxX;
+  const offsetY = (Math.random() * maxY * 2) - maxY;
+
+  noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+
+  const messages = [
+    "Nice try 😏",
+    "Absolutely not",
+    "Stop running from love 🥺",
+    "It’s destiny 💘",
+    "Just click YES already 😌"
+  ];
+
+  document.getElementById("tease").innerText =
+    messages[Math.min(noCount - 1, messages.length - 1)];
+}
+
+
+  /* 💕 BACKGROUND HEARTS */
+  let heartInterval;
+  function startBackgroundHearts() {
+    heartInterval = setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "bg-heart";
+      heart.innerText = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (14 + Math.random() * 20) + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }, 300);
+  }
+
+  function stopBackgroundHearts() {
+    clearInterval(heartInterval);
+  }
+
+  /* 💌 FINAL SCREEN */
+function finalScreen() {
+  stopBackgroundHearts();
+
+  document.body.innerHTML = `
+    <div style="padding: 40px 16px;">
+      <h1>You’re officially my Valentine 💖</h1>
+
+      <img
+        src="img/final.gif"
+        alt="final"
+        style="
+          width: 260px;
+          max-width: 90%;
+          margin: 20px auto;
+          display: block;
+        "
+      />
+
+      <p style="font-size:18px;color:#555;">
+        You unlocked every reason 🥺<br><br>
+        You’re stuck with me now.<br>
+        No takebacks. No refunds. Forever 😌💌
+      </p>
+    </div>
+  `;
+}
+
+</script>
+
+</body>
+</html>
