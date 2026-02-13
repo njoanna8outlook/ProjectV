@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
+    button {
+  -webkit-appearance: none;
+  appearance: none;
+}
     * {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
@@ -113,14 +117,18 @@
       top: 60%;
     }
 
-    #no {
-  background: #ccc;
+   #no {
+  background-color: #ffd6e6 !important;
+  color: #ff4d88;
+  border: 2px dashed #ff9bbb;
+
   position: absolute;
   left: 55%;
   top: 60%;
   transform: translate(0, 0);
   transition: transform 0.15s ease;
 }
+
 
     /* 📱 MOBILE */
     @media (max-width: 600px) {
@@ -133,6 +141,25 @@
         max-width: 260px;
       }
     }
+
+    @media (max-width: 600px) {
+  #buttonContainer {
+    height: 140px;
+  }
+
+  #yes,
+  #no {
+    font-size: 16px;
+    padding: 10px 18px;
+    width: auto;
+    min-width: 140px;
+    border-radius: 8px;
+  }
+
+  #reactionImg {
+    width: 180px;
+  }
+}
   </style>
 </head>
 
@@ -140,10 +167,10 @@
 
 <!-- 🎮 GAME SCREEN -->
 <div id="screen1">
-  <h1>Reasons Why I Want You 💖</h1>
+  <h1>Sweeeeets, I Want You as my Valentine💖</h1>
   <p>
-    💕 Catch the hearts!<br>
-    Each heart reveals a reason why I want you to be my Valentine 💌
+    💕 Catch 5 hearts!<br>
+     Each heart reveals a reason why I want you to be my Valentine 💌
   </p>
   <p id="progress">Reasons unlocked: 0 / 5</p>
   <p id="reasonBox" style="font-size:20px;color:#ff4d88;min-height:40px;"></p>
@@ -151,7 +178,7 @@
 
 <!-- 💘 QUESTION SCREEN -->
 <div id="screen2">
-  <h1>Now tell me… 💘</h1>
+  <h1>Sweetie Now tell me… 💘</h1>
   <p id="tease">Will you be my Valentine?</p>
 
   <img id="reactionImg" src="img/sweet.gif" alt="reaction">
@@ -166,11 +193,12 @@
 <script>
   /* 💌 EDIT THESE */
   const reasons = [
-    "You make me feel safe 💕",
+    
     "You always make me laugh 🥰",
     "I love the way you care 😌",
     "You’re my favorite person 💖",
-    "Life feels better with you 💌"
+    "Life feels better with you 💌",
+    "You're such a cutie 💕",
   ];
 
   let reasonIndex = 0;
@@ -303,7 +331,7 @@ function finalScreen() {
 
   document.body.innerHTML = `
     <div style="padding: 40px 16px;">
-      <h1>You’re officially my Valentine 💖</h1>
+      <h1>Sweetie Pie You’re officially my Valentine 💖</h1>
 
       <img
         src="img/final.png"
@@ -317,9 +345,12 @@ function finalScreen() {
       />
 
       <p style="font-size:18px;color:#555;">
-        You unlocked every reason 🥺<br><br>
-        You’re stuck with me now.<br>
-        No takebacks. No refunds. Forever 😌💌
+       <br><br>
+       I think back at how our paths cross<br>
+       and I feel everything was absolutely magical and so nicely set into place<br>
+        You’re stuck with me now.😌<br>
+        No takebacks. No refunds. Forever 😌
+        I love you to Pluto and back. 💌
       </p>
     </div>
   `;
@@ -329,4 +360,5 @@ function finalScreen() {
 
 </body>
 </html>
+
 
