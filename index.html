@@ -204,6 +204,17 @@
 </div>
 
 <script>
+const preloadImages = [
+  "img/sweet.gif",
+  "img/panic.gif",
+  "img/final.gif"
+];
+
+preloadImages.forEach(src => {
+  const img = new Image();
+  img.src = src;
+});
+  
   /* 💌 EDIT THESE */
   const reasons = [
     "First of all you're such a cutie 💕",
@@ -378,6 +389,7 @@ function finalScreen() {
 
 </body>
 </html>
+
 
 
 
