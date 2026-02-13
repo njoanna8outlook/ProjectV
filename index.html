@@ -6,6 +6,11 @@
 
   <style>
     * {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+    * {
       box-sizing: border-box;
       touch-action: manipulation;
     }
@@ -40,12 +45,17 @@
 
     /* 🌸 GAME HEARTS */
     .game-heart {
-      position: absolute;
-      bottom: -40px;
-      font-size: 28px;
-      cursor: pointer;
-      animation: floatGame linear forwards;
-    }
+  position: absolute;
+  bottom: -40px;
+  font-size: 28px;
+  cursor: pointer;
+  animation: floatGame linear forwards;
+
+  /* 🚫 prevent highlight */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
 
     @keyframes floatGame {
       0% {
@@ -296,7 +306,7 @@ function finalScreen() {
       <h1>You’re officially my Valentine 💖</h1>
 
       <img
-        src="img/final.gif"
+        src="img/final.png"
         alt="final"
         style="
           width: 260px;
@@ -319,3 +329,4 @@ function finalScreen() {
 
 </body>
 </html>
+
