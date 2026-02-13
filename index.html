@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
+#yes {
+  z-index: 3;
+}
+
+#no {
+  z-index: 2;
+}
+    
     button {
   -webkit-appearance: none;
   appearance: none;
@@ -98,9 +106,14 @@
     }
 
     #reactionImg {
-      width: 220px;
-      margin-top: 20px;
-    }
+  width: 200px;
+  height: 200px;          /* 👈 FIXED HEIGHT */
+  object-fit: contain;    /* keeps GIF aspect ratio */
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
     #buttonContainer {
       position: relative;
@@ -280,31 +293,36 @@
 
   /* 😈 NO BUTTON CHAOS */
   let noCount = 0;
-  function moveNo() {
+ function moveNo() {
   noCount++;
 
   const noBtn = document.getElementById("no");
-  document.getElementById("reactionImg").src = "img/panic.png";
+  document.getElementById("reactionImg").src = "img/panic.gif";
 
-  const maxX = 120;
-  const maxY = 80;
+  const container = document.getElementById("buttonContainer");
+  const rect = container.getBoundingClientRect();
 
-  const offsetX = (Math.random() * maxX * 2) - maxX;
-  const offsetY = (Math.random() * maxY * 2) - maxY;
+  // Movement bounds (TOP HALF only)
+  const maxX = rect.width - noBtn.offsetWidth;
+  const maxY = rect.height / 2 - noBtn.offsetHeight;
+
+  const offsetX = Math.random() * maxX;
+  const offsetY = Math.random() * maxY;
 
   noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
 
   const messages = [
     "Nice try 😏",
-    "Absolutely not",
+    "Nope",
     "Stop running from love 🥺",
-    "It’s destiny 💘",
+    "You’re not escaping this 💘",
     "Just click YES already 😌"
   ];
 
   document.getElementById("tease").innerText =
     messages[Math.min(noCount - 1, messages.length - 1)];
 }
+
 
 
   /* 💕 BACKGROUND HEARTS */
@@ -348,8 +366,8 @@ function finalScreen() {
        <br><br>
        I think back at how our paths cross<br>
        and I feel everything was absolutely magical and so nicely set into place<br>
-        You’re stuck with me now.😌<br>
-        No takebacks. No refunds. Forever 😌
+       So, You’re stuck with me now.😌<br>
+        No takebacks. No refunds. Forever 😌<br>
         I love you to Pluto and back. 💌
       </p>
     </div>
@@ -360,5 +378,6 @@ function finalScreen() {
 
 </body>
 </html>
+
 
 
