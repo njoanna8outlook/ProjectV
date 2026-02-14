@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
+
+    #buttonContainer {
+  position: relative;
+}
 #yes {
   z-index: 3;
 }
@@ -303,36 +307,43 @@ preloadImages.forEach(src => {
   }
 
   /* 😈 NO BUTTON CHAOS */
-  let noCount = 0;
- function moveNo() {
+function moveNo() {
   noCount++;
 
   const noBtn = document.getElementById("no");
-  document.getElementById("reactionImg").src = "img/panic.png";
-
   const container = document.getElementById("buttonContainer");
-  const rect = container.getBoundingClientRect();
+  const img = document.getElementById("reactionImg");
 
-  // Movement bounds (TOP HALF only)
-  const maxX = rect.width - noBtn.offsetWidth;
-  const maxY = rect.height / 2 - noBtn.offsetHeight;
+  img.src = "img/panic.png";
 
-  const offsetX = Math.random() * maxX;
-  const offsetY = Math.random() * maxY;
+  const containerRect = container.getBoundingClientRect();
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
 
-  noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+  // Safe movement area inside container
+  const maxX = containerRect.width - btnWidth;
+  const maxY = containerRect.height - btnHeight;
+
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  // Position absolutely inside container
+  noBtn.style.position = "absolute";
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
 
   const messages = [
     "Nice try 😏",
     "Nope",
     "Stop running from love 🥺",
-    "You’re not escaping this 💘",
+    "You can’t escape 💘",
     "Just click YES already 😌"
   ];
 
   document.getElementById("tease").innerText =
     messages[Math.min(noCount - 1, messages.length - 1)];
 }
+
 
 
 
@@ -389,6 +400,7 @@ function finalScreen() {
 
 </body>
 </html>
+
 
 
 
