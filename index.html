@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-
-    #buttonContainer {
-  position: relative;
-}
 #yes {
   z-index: 3;
 }
@@ -16,7 +12,7 @@
 #no {
   z-index: 2;
 }
-    
+
     button {
   -webkit-appearance: none;
   appearance: none;
@@ -210,15 +206,15 @@
 <script>
 const preloadImages = [
   "img/sweet.gif",
-  "img/panic.gif",
-  "img/final.gif"
+  "img/panic.png",
+  "img/final.png"
 ];
 
 preloadImages.forEach(src => {
   const img = new Image();
   img.src = src;
 });
-  
+
   /* 💌 EDIT THESE */
   const reasons = [
     "First of all you're such a cutie 💕",
@@ -226,7 +222,7 @@ preloadImages.forEach(src => {
     "I love the way you care 😌",
     "You’re my favorite person 💖",
     "Life just feels better with you 💌",
-    
+
   ];
 
   let reasonIndex = 0;
@@ -307,43 +303,36 @@ preloadImages.forEach(src => {
   }
 
   /* 😈 NO BUTTON CHAOS */
-function moveNo() {
+  let noCount = 0;
+ function moveNo() {
   noCount++;
 
   const noBtn = document.getElementById("no");
+  document.getElementById("reactionImg").src = "img/panic.png";
+
   const container = document.getElementById("buttonContainer");
-  const img = document.getElementById("reactionImg");
+  const rect = container.getBoundingClientRect();
 
-  img.src = "img/panic.png";
+  // Movement bounds (TOP HALF only)
+  const maxX = rect.width - noBtn.offsetWidth;
+  const maxY = rect.height / 2 - noBtn.offsetHeight;
 
-  const containerRect = container.getBoundingClientRect();
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
+  const offsetX = Math.random() * maxX;
+  const offsetY = Math.random() * maxY;
 
-  // Safe movement area inside container
-  const maxX = containerRect.width - btnWidth;
-  const maxY = containerRect.height - btnHeight;
-
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
-
-  // Position absolutely inside container
-  noBtn.style.position = "absolute";
-  noBtn.style.left = randomX + "px";
-  noBtn.style.top = randomY + "px";
+  noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
 
   const messages = [
     "Nice try 😏",
     "Nope",
     "Stop running from love 🥺",
-    "You can’t escape 💘",
+    "You’re not escaping this 💘",
     "Just click YES already 😌"
   ];
 
   document.getElementById("tease").innerText =
     messages[Math.min(noCount - 1, messages.length - 1)];
 }
-
 
 
 
@@ -386,6 +375,7 @@ function finalScreen() {
 
       <p style="font-size:18px;color:#555;">
        <br><br>
+       I think back at how our paths cross<br>
        I think back of how we met<br>
        and I feel everything was absolutely so magical<br>
        So, You’re stuck with me now in this magic😌<br>
@@ -400,13 +390,3 @@ function finalScreen() {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
